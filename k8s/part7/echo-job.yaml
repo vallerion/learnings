@@ -1,0 +1,16 @@
+# echo-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echo-job
+spec:
+  completions: 5 # creates 5 pods sequentially
+  parallelism: 3 # now 3 pods running parallel
+#  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: echo
+          image: busybox
+          command: ["echo", "Running in a job"]

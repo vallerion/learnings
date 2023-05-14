@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellok8s
+spec:
+  selector:
+    matchLabels:
+      app: hellok8s
+  template:
+    metadata:
+      labels:
+        app: hellok8s
+    spec:
+      containers:
+        - image: vallerion/hellok8s:0.6.3
+          name: hellok8s-container
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hellok8s-svc
+spec:
+  selector:
+    app: hellok8s
+  ports:
+    - port: 8081
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hellok8s-hop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hellok8s
+  minReplicas: 1
+  maxReplicas: 10

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellok8s
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 15
+      maxUnavailable: 5
+  replicas: 10
+  selector:
+    matchLabels:
+      app: hellok8s
+  template:
+    metadata:
+      labels:
+        app: hellok8s
+    spec:
+      containers:
+        - image: vallerion/k8s-cource-1:1.01
+          name: hellok8s-container

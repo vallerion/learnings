@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: num
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: num
+  template:
+    metadata:
+      labels:
+        app: num
+    spec:
+      containers:
+        - image: vallerion/num:0.1
+          name: num-container
+          readinessProbe:
+            periodSeconds: 1
+            successThreshold: 5
+            httpGet:
+              path: /health
+              port: 8081
+          livenessProbe:
+            periodSeconds: 1
+            httpGet:
+              path: /health
+              port: 8081

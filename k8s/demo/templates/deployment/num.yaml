@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apps.num.name }}
+  labels:
+    name: {{ .Values.apps.num.name }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.apps.num.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      name: {{ .Values.apps.num.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.apps.num.name }}
+        release: {{ .Release.Name }}
+    spec:
+{{/* WHAT IS IT      serviceAccountName: {{ include "demo.serviceAccountName" . }}*/}}
+      containers:
+        - name: {{ .Values.apps.num.name }}
+          image: "{{ .Values.apps.num.image }}:{{ .Values.apps.num.tag }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.num.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.apps.num.livenessPath }}
+              port: http
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.apps.num.readinessPath }}
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

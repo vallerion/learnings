@@ -1,0 +1,22 @@
+{{- range .Values.services }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+  labels:
+    release: {{ $.Release.Name }}
+    name: {{ .name }}
+spec:
+  type: {{ .type }}
+  ports:
+    - port: {{ .port }}
+      nodePort: {{ .nodePort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+      name: {{ .selector }}
+      release: {{ $.Release.Name }}
+
+---
+{{- end }}

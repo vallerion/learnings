@@ -1,0 +1,14 @@
+# echo-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fail-job
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: echo
+          image: busybox
+          command: ["fail"]

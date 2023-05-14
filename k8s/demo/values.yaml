@@ -1,0 +1,39 @@
+
+apps:
+  hellok8s:
+    name: hellok8s
+    image: vallerion/hellok8s
+    tag: 0.6.3
+    replicaCount: 2
+    port: 8081
+    livenessPath: /fail
+    readinessPath: /fail
+  num:
+    name: num
+    image: vallerion/num
+    tag: 0.1
+    replicaCount: 4
+    port: 8081
+    livenessPath: /fail
+    readinessPath: /fail
+
+services:
+  hellok8s:
+    name: hellok8s-svc
+    type: NodePort
+    port: 8081
+    nodePort: 30002
+    selector: hellok8s
+  num:
+    name: num-svc
+    type: ClusterIP
+    port: 8081
+    selector: num
+
+resources:
+  limits:
+    cpu: 0.75
+    memory: 32Mi
+  requests:
+    cpu: 0.5
+    memory: 32Mi

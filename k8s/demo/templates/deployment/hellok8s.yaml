@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.apps.hellok8s.name }}
+  labels:
+    name: {{ .Values.apps.hellok8s.name }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.apps.hellok8s.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      name: {{ .Values.apps.hellok8s.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.apps.hellok8s.name }}
+        release: {{ .Release.Name }}
+    spec:
+{{/* WHAT IS IT      serviceAccountName: {{ include "demo.serviceAccountName" . }}*/}}
+      containers:
+        - name: {{ .Values.apps.hellok8s.name }}
+          image: "{{ .Values.apps.hellok8s.image }}:{{ .Values.apps.hellok8s.tag }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.hellok8s.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.apps.hellok8s.livenessPath }}
+              port: http
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.apps.hellok8s.readinessPath }}
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
