@@ -17,3 +17,9 @@ It's okay if several days, weeks or months (up to 3 months) have passed between 
 
 Take notes on the first reading, back to them then chapter is finished. Do some research on notes, watch video or read
 articles. Take notes on articles.
+
+# Content
+
+## Books
+
+* [Ultimate Go Notebook](/books/ultimate_go_notebook.md)
