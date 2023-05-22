@@ -23,3 +23,7 @@ articles. Take notes on articles.
 ## Books
 
 * [Ultimate Go Notebook](/books/ultimate_go_notebook.md)
+
+## Courses
+
+* [Kubernetes Essentials](/cources/k8s-essentials)
