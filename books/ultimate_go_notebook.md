@@ -21,8 +21,8 @@
 
 ### 3.2 Translation Lookaside Buffer (TLB)
 
-2. The **linked list** is twice **slower** than a **row traversal** dut to cache line misses but has fewer TLB (Translation
-   Lookaside Buffer) misses.
+2. The **linked list** is twice **slower** than a **row traversal** dut to cache line misses but has fewer TLB (
+   Translation Lookaside Buffer) misses.
 3. The OS shares physical memory by breaking it into pages and provide access to physical memory through pages for every
    running program. The TLB is a small buffer inside CPU which helps OS reduce latency on translating virtual memory
    address to physical memory address.
@@ -58,3 +58,60 @@
 
 1. A slice is a three-word structure: pointer to backing array, length and capacity.
 2. If a size of slice is known at compile time, the backing array could be constructed on stack.
+
+### 3.13 Data Semantic Guideline For Slices
+
+1. It is recommended to use value semantics to move slice around program since slice just contain a link to actual data.
+2. Marshaling and unmarshaling are only recommended cases to use pointer semantics with slice.
+
+### 3.15 Appending With Slices
+
+1. If maximum capacity reached `append` creates its own copy of provided slice, mutate it and return.
+2. `append` creates a new backing array (doubling or growing by 25%), updates slice pointer, copies values from old to
+   new array, add new value and return.
+3. Once backing array reached limit in 1024 elements growing happens at 25%.
+
+### 3.22 Declaring And Constructing Maps
+
+1. Map is a data structure that support storing and accessing data by the key. It uses a hashmap and bucket system to
+   support contiguous block of memory.
+
+## Chapter 4: Decoupling
+
+### 4.5 Methods Are Just Functions
+
+1. Methods are just a functions provide the ability for data to exhibit behavior.
+2. When I call a method, the compiler converts it to a function call.
+
+### 4.6 Know The Behavior of the Code
+
+1. Functions are values in Go and belongs to set of internal types.
+2. Assigning a function to variable create a copy of this function.
+   ```go
+      d := data{
+        name: "Bill",
+      }
+      f1 := d.displayName // f1 is copy
+      d.name = "Taras"
+      f1()            // print Bill
+      d.displayName() // prints Taras
+   ```
+
+### 4.7 Interfaces
+
+1. Interfaces in Go mainly used for decoupling between software components and to encourage design by composition.
+
+### 4.9 Implementing Interfaces
+
+1. Go is about convention over configuration.
+
+### 4.10 Polymorphism
+
+1. Polymorphism means that a piece of code (e.g. function) can change its behaviour without changing internal code.
+   ```go
+      func read(r Reader) (int, error) { // Reader interface can change behaviour
+         ...
+      }
+   ```
+2. Interface in Go is two-word structure: type descriptor and a data pointer.
+   
