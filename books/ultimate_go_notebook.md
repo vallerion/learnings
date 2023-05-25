@@ -113,5 +113,26 @@
          ...
       }
    ```
-2. Interface in Go is two-word structure: type descriptor and a data pointer.
+2. Interface in Go is two-word structure: type descriptor and a data pointer. Data pointer refer to actual data being
+   stored. The type descriptor is also a pointer that points to iTable structure. The iTable (interface table) structure contains concrete
+   data type (implementation) and pointer to set of functions of implementation being stored.
+   ```
+      +----------------------+                     
+      |       Interface      |                     iTable:
+      +----------------------+                     +----------------+
+      |   Type: *iTable      |                     |  Type          |  -->  ConcreteType
+      |   Value: *Data       |                     +----------------+
+      +----------------------+                     |  NumMethods    |  -->  total number of methods defined in the interface
+                                                   +----------------+
+                                                   |  Method1       |
+                                                   +----------------+
+                                                   |  Method2       |
+                                                   +----------------+
+   ```
    
+
+                                     
+                                     
+                                     
+                                     
+                                     
